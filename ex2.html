@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Cadastro de usuários na Tabela</title>
+	</head>
+	<body>
+		<h1
+			style="
+				text-align: center;
+				color: rgb(167, 109, 33);
+				font-family: Arial, Helvetica, sans-serif;
+			"
+		>
+			Inserir dados de usuários na Tabela
+		</h1>
+
+		<form id="userForm">
+			<p>
+				<label for="nome" style="margin-right: 15px">Nome:</label>
+				<input type="text" id="nome" size="50%" required />
+			</p>
+
+			<p>
+				<label for="idade" style="margin-right: 19px">Idade:</label>
+				<input
+					type="number"
+					id="idade"
+					style="width: 40px"
+					min="0"
+					max="100"
+					required
+				/>
+			</p>
+
+			<p>
+				<label for="funcao" style="margin-right: 8px">Função:</label>
+				<input type="text" id="funcao" size="25%" required />
+			</p>
+
+			<p>
+				<label for="tel">Telefone:</label>
+				<input type="text" id="tel" size="10px" required />
+			</p>
+			<button type="button" onclick="adicionaLinha()">Enviar Dados</button>
+		</form>
+		<br />
+
+		<!-- Centraliza -->
+		<table style="width: 90%; margin: auto" id="dadosnaTab">
+			<tbody style="text-align: center">
+				<!-- Define o corpo da tabela onde os dados serão inseridos -->
+				<thead>
+					<tr style="background-color: #ccc">
+						<th style="width: 40%">Nome</th>
+						<th style="width: 10%">Idade</th>
+						<th style="width: 20">Função</th>
+						<th style="width: 15%">Telefone</th>
+						<th style="width: 15%">Ações</th>
+					</tr>
+				</thead>
+			</tbody>
+		</table>
+
+		<script>
+			function adicionaLinha() {
+				// Seleciona o corpo (tbody) da tabela
+				const minhaTabela = document
+					.getElementById("dadosnaTab")
+					.getElementsByTagName("tbody")[0];
+
+				const nome = document.getElementById("nome").value;
+				const idade = document.getElementById("idade").value;
+				const funcao = document.getElementById("funcao").value;
+				const tel = document.getElementById("tel").value;
+
+				// Verifica se todos os campos foram preenchidos
+				if (nome && idade && funcao && tel) {
+					const novaLinha = minhaTabela.insertRow();
+
+					// Cria as células e insere os valores
+					novaLinha.insertCell(0).textContent = nome;
+					novaLinha.insertCell(1).textContent = idade;
+					novaLinha.insertCell(2).textContent = funcao;
+					novaLinha.insertCell(3).textContent = tel;
+
+					// Cria uma célula para o botão "Deletar"
+					const apagarCelula = novaLinha.insertCell(4);
+					const botaoDeletar = document.createElement("button");
+					botaoDeletar.style.color = "red"; // Cor do texto
+					botaoDeletar.textContent = "Deletar";
+
+					// Estou adicionando o botão Deletar a tabela quando for inserido o usuário
+					apagarCelula.appendChild(botaoDeletar);
+
+					/* Código para apagar o respectivo usuário */
+					botaoDeletar.onclick = function () {
+						resp = confirm("Deseja deletar este usuário?");
+						if (resp == true) {
+							// Remove a linha da tabela
+							minhaTabela.deleteRow(novaLinha.rowIndex - 1);
+						} else {
+							alert("Operação cancelada !");
+						}
+					};
+
+					// Limpa os campos do formulário após adicionar a linha na tabela
+					document.getElementById("userForm").reset();
+				} else {
+					// Exibe um alerta se algum campo não for preenchido
+					alert("Por favor, preencha todos os campos.");
+				}
+			}
+		</script>
+	</body>
+</html>
